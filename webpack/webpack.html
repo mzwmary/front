@@ -735,7 +735,7 @@ app.listen(3000, function () {
 </ol>
 <h2 id="-devserver-">使用devServer解决跨域问题</h2>
 <p>在开发阶段很多时候需要使用到跨域，何为跨域？请看下图：</p>
-<p><img src="./images/跨域.png" alt="跨域"></p>
+<p><img src="./images/dev.png" alt="跨域"></p>
 <p>开发阶段往往会遇到上面这种情况，也许将来上线后，前端项目会和后端项目部署在同一个服务器下，并不会有跨域问题，但是由于开发时会用到webpack-dev-server，所以一定会产生跨域的问题</p>
 <p>目前解决跨域主要的方案有：</p>
 <ol>
@@ -746,7 +746,7 @@ app.listen(3000, function () {
 <p>此处介绍的使用devServer解决跨域，其实原理就是http proxy</p>
 <p>将所有ajax请求发送给devServer服务器，再由devServer服务器做一次转发，发送给数据接口服务器</p>
 <p>由于ajax请求是发送给devServer服务器的，所以不存在跨域，而devServer由于是用node平台发送的http请求，自然也不涉及到跨域问题，可以完美解决！</p>
-<p><img src="./images/解决跨域.png" alt="解决跨域"></p>
+<p><img src="./images/devserver.png" alt="解决跨域"></p>
 <p>服务器代码（返回一段字符串即可）：</p>
 <pre><code class="lang-js">const express = require(&#39;express&#39;)
 const app = express()
@@ -979,10 +979,10 @@ $(function() {
 <li><p>运行<code>npm run dev-build</code>重新打包</p>
 </li>
 <li><p>查看<code>dist</code>目录</p>
-<p><img src="images/1558771916946.png" alt="1558771916946"></p>
+<p><img src="./images/1558771916946.png" alt="1558771916946"></p>
 </li>
 <li><p>查看<code>vendors~main~other.bundle.js</code>，其实就是把都用到的jQuery打包到了一个单独的js中</p>
-<p><img src="images/1558772012664.png" alt="1558772012664"></p>
+<p><img src="./images/1558772012664.png" alt="1558772012664"></p>
 </li>
 </ol>
 <h3 id="-">动态导入 (懒加载)</h3>
@@ -1245,7 +1245,7 @@ module.exports = {
 </li>
 </ol>
 <h2 id="happypack">Happypack</h2>
-<p><img src="images/HappyPack_Workflow.png" alt="A diagram showing the flow between HappyPack&#39;s components"></p>
+<p><img src="./images/HappyPack_Workflow.png" alt="A diagram showing the flow between HappyPack&#39;s components"></p>
 <p>由于webpack在node环境中运行打包构建，所以是单线程的模式，在打包众多资源时效率会比较低下，早期可以通过<code>Happypack</code>来实现多进程打包。当然，这个问题只出现在低版本的webpack中，现在的webpack性能已经非常强劲了，所以无需使用Happypack也可以实现高性能打包</p>
 <p><a href="https://github.com/amireh/happypack">Happypack官网</a></p>
 <p>引用官网原文：</p>
@@ -1324,7 +1324,7 @@ module.exports = {
 <p>在优化访问性能时，除了充分利用浏览器缓存之外，还需要涉及一个性能指标：coverage rate（覆盖率）</p>
 <p>可以在Chrome浏览器的控制台中按：ctrl  + shift + p，查找coverage，打开覆盖率面板</p>
 <p>开始录制后刷新网页，即可看到每个js文件的覆盖率，以及总的覆盖率</p>
-<p><img src="images/1559811338075.png" alt="1559811338075"></p>
+<p><img src="./images/1559811338075.png" alt="1559811338075"></p>
 <p>想提高覆盖率，需要尽可能多的使用动态导入，也就是懒加载功能，将一切能使用懒加载的地方都是用懒加载，这样可以大大提高覆盖率</p>
 <p>但有时候使用懒加载会影响用户体验，所以可以在懒加载时使用魔法注释：Prefetching，是指在首页资源加载完毕后，空闲时间时，将动态导入的资源加载进来，这样即可以提高首屏加载速度，也可以解决懒加载可能会影响用户体验的问题，一举两得！</p>
 <pre><code class="lang-js">function getComponent() {

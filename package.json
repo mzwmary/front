@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "config": "webpack --config webpack.config.js",
+    "spa": "webpack --config webpack.SPA.config.js",
+    "build": "webpack --config ./build/webpack.prod.js",
+    "dev_config": "webpack-dev-server",
+    "dev": "webpack-dev-server --config ./build/webpack.dev.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +20,36 @@
   "bugs": {
     "url": "https://github.com/mzwmary/front/issues"
   },
-  "homepage": "https://github.com/mzwmary/front#readme"
+  "homepage": "https://github.com/mzwmary/front#readme",
+  "devDependencies": {
+    "@babel/core": "^7.12.13",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-env": "^7.12.13",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^7.0.0",
+    "cors": "^2.8.5",
+    "css-loader": "^5.0.1",
+    "expose-loader": "^2.0.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.0.0",
+    "html-withimg-loader": "^0.1.16",
+    "less": "^4.1.1",
+    "less-loader": "^8.0.0",
+    "node-sass": "^5.0.0",
+    "sass-loader": "^11.0.0",
+    "style-loader": "^2.0.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.20.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3"
+  },
+  "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "@babel/runtime": "^7.12.13",
+    "axios": "^0.21.1",
+    "jquery": "^3.5.1"
+  }
 }
