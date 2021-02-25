@@ -8,9 +8,16 @@
 </head>
 
 <body>
-  <div>开始学习webpack</div>
+  <div id="app">
+    <h1 v-text="msg"></h1>
+    <router-link to="/home">首页</router-link>
+    <router-link to="/news">新闻</router-link>
+    <router-view></router-view>
+  </div>
+  <div class="autopro">开始学习webpack</div>
   <!-- <div>webpack</div> -->
-  <img src="/assets/1.jpg" alt="">
+  <img src="../assets/1.jpg" alt="">
+  <div id="btn">添加main</div>
 </body>
 
 </html>
