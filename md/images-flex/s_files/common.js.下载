@@ -1,0 +1,47 @@
+(function(doc, win) {
+	var docEl = doc.documentElement,
+		resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+		recalc = function() {
+			var clientWidth = docEl.clientWidth;
+			if (!clientWidth) return;
+			if (clientWidth >= 750) {
+				docEl.style.fontSize = 100 + 'px';
+			} else {
+				docEl.style.fontSize = 50 * (clientWidth / 375) + 'px';
+			}
+
+		};
+		// alert(docEl.style.fontSize);
+	if (!doc.addEventListener) return;
+	win.addEventListener(resizeEvt, recalc, false);
+	doc.addEventListener('DOMContentLoaded', recalc, false);
+})(document, window);
+
+//toast弹框提示
+function commonToast(title) {
+	//提示
+	layer.open({
+		content: title,
+		skin: 'msg',
+		time: 2 //2秒后自动关闭
+	});
+}
+//替换分号
+function replaceAll(str) {
+	if (str != null)
+		str = str.replace(/,/g, "")
+	return str;
+}
+
+//接口调用
+function getPost(url,dataSource,callback){
+	$.post(url, dataSource, function(data){
+//		console.log('1111111111111',data);
+		data = JSON.parse(data);
+		console.log('dataaaaaaaaaa',data);
+		callback(data);
+	}).error(function(){
+		commonToast('连接超时');
+		layer.closeAll();
+	},'json');
+}

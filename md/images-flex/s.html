@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!-- saved from url=(0089)file:///E:/03-%E9%A1%B9%E7%9B%AE/workspace/src/main/webapp/WEB-INF/views/h5-html/map.html -->
+<html lang="en" style="font-size: 48px;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes"><!-- home screen app 全屏 -->
+  <!-- 清除浏览器缓存 -->
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+	<title>房产所在小区</title>
+	<link rel="stylesheet" href="./s_files/common.css">
+	<link rel="stylesheet" href="./s_files/map.css">
+</head>
+<body>
+	<header>
+		<div class="header">
+			<div>房产所在小区</div>
+			<div class="local_pic">上海</div>
+		</div>
+		<div class="search_outer">
+			<div class="search_div center-xy">
+				<input type="text" placeholder="请输入小区名或地址">
+			</div>
+		</div>
+	</header>
+  <section class="locals_wrap">
+    <div class="locals_h">搜索历史</div>
+    <ul class="locals_ul">
+      <li class="locals_li">
+        <div class="locals_top">永威美邻</div>
+        <div class="locals_btm">郑州市-金水区-农业东路</div>
+      </li>
+    </ul>
+  </section>
+  <section class="guide_wrap">
+    <div class="guide_enter"></div>
+    <div class="guide_outer">
+      <div class="guide_cont center-xy">
+        <div class="guide_top">
+          <ul class="guide_ul" style="left: 0px;">
+            <li class="guide_li">
+              <div class="guide_li_c1"></div>
+             <!--  <div class="guide_tit">房产信息</div>
+              <div class="guide_midT">填写信息&nbsp;免费评估</div>
+              <div class="guide_int">
+                <div class="int_tit">为获取准确评估，请输入详细房屋信息</div>
+                <div class="int_check box">
+                  <div>选择楼栋</div>
+                  <div>选择楼层</div>
+                  <div>选择房号</div>
+                </div>
+                <ul class="guide_ul">
+                  <li class="guide_li guide_liS box">
+                    <div class="li_tit">房产所在小区</div>
+                    <div class="li_cont">
+                      <div class="liS_top">碧桂园清雅苑</div>
+                      <div class="liS_btm">上海市浦东新区南泉路12弄</div>
+                    </div>
+                  </li>
+                  <li class="guide_li guide_liN box">
+                    <div>肯定是快递费</div>
+                    <div></div>
+                  </li>
+                  <li class="guide_li guide_liN box">
+                    <div></div>
+                    <div></div>
+                  </li>
+                </ul>
+              </div> -->
+            </li>
+            <li class="guide_li">
+              <div class="guide_li_c2"></div>
+            </li>
+            <li class="guide_li">
+              <div class="guide_li_c3"></div>
+            </li>
+          </ul>
+        </div>
+        <div class="guide_xxx">
+          <div class="x"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+	<div id="container"></div>
+	<script type="text/javascript" src="./s_files/jquery.min.js.下载"></script>
+	<script type="text/javascript" src="./s_files/common.js.下载"></script>
+	<script type="text/javascript" src="./s_files/pub.js.下载"></script>
+	<!-- <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.0&key=b5a3a15401e3724292ed5fee480f09dc"></script> -->
+	<!-- <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script> -->
+	<script type="text/javascript">
+    $(function(){
+      // 初始化
+      sowingMap($('.guide_top')[0],$('.guide_ul')[0],$('.guide_li'))
+      // 轮播图
+      function sowingMap(wrap,ul,li){
+        var MaxWidth = $('.guide_ul').width();
+        console.log(MaxWidth)
+        // 初始化手指坐标点
+        var startPoint = 0;
+        var startEle = 0;
+        //手指按下
+        wrap.addEventListener("touchstart",function(e){
+          startPoint = e.changedTouches[0].pageX;
+          startEle = ul.offsetLeft;
+        });
+        //手指滑动
+        wrap.addEventListener("touchmove",function(e){
+          var currPoint = e.changedTouches[0].pageX;
+          var disX = currPoint - startPoint;
+          var left = startEle + disX;
+          if(left >= 0){
+            left = 0;
+          }
+          if(left <= -MaxWidth){
+            left = -MaxWidth;
+          }
+          ul.style.left = left + 'px';
+        });
+        //当手指抬起的时候，判断图片滚动离左右的距离
+        wrap.addEventListener("touchend",function(e){
+        })
+      }
+    }) 
+	</script>
+
+</body></html>
