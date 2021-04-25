@@ -5,5 +5,30 @@ module.exports = {
     path: path.join(__dirname, './dist/'),
     filename: 'bundle.js'
   },
-  mode: 'development'
+  mode: 'development',
+  module: {
+    rules: [
+      // {
+      //   test: /\.js$/,
+      //   use: './loaders/loader1.js'
+      // },
+      // {
+      //   test: /\.js$/,
+      //   use: [
+      //     './loaders/loader1.js',
+      //     './loaders/loader2.js',
+      //     './loaders/loader3.js'
+      //   ]
+      // },
+      {
+        test: /\.js$/,
+        use: {
+          loader: './loaders/loader1.js',
+          options: {
+            name: '哈哈哈'
+          }
+        }
+      }
+    ]
+  }
 }
