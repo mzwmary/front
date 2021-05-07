@@ -6,6 +6,7 @@ const parser = require('@babel/parser') //将代码转成抽象语法树
 const traverse = require('@babel/traverse').default //es6导出的 处理抽象语法树数据
 const generator = require('@babel/generator').default //将抽象语法树转成代码
 const ejs = require('ejs')
+const { SyncHook } = require('tapable')
 
 class Compiler {
   constructor(config) {
@@ -18,25 +19,41 @@ class Compiler {
     this.modules = {}
     // 存放所有loader
     this.rules = config.module.rules
+    // Compiler构造函数内部定义钩子
+    this.hooks = {
+      compile: new SyncHook(),
+      afterCompile: new SyncHook(),
+      emit: new SyncHook(),
+      afterEmit: new SyncHook(),
+      done: new SyncHook()
+    }
+    if (Array.isArray(this.config.plugins)) {
+      this.config.plugins.forEach(plugin => plugin.apply(this))
+    }
   }
   start() {
+    this.hooks.compile.call()
     this.depAnalyse(path.resolve(this.root, this.entry))
     this.emitFile()
+    this.hooks.afterCompile.call()
+    this.hooks.emit.call()
+    this.hooks.afterEmit.call()
+    this.hooks.done.call()
   }
   getSource(path) {
     return fs.readFileSync(path, 'utf-8')
   }
   depAnalyse(modulePath) {
     let source = this.getSource(modulePath)
-    console.log(modulePath)
+    // console.log(modulePath)
     // 读取loader
     let readAddCallloader = (use, obj) => {
       let loaderPath = path.resolve(this.root, use)
       let loader = require(loaderPath)
-      source = loader.call(obj,source)
-      console.log(use)
+      source = loader.call(obj, source)
+      // console.log(use)
     }
-    
+
     // 读取rules规则,倒序遍历
     for (let i = this.rules.length - 1; i >= 0; i--) {
       let {test,use} = this.rules[i]
@@ -48,7 +65,9 @@ class Compiler {
             readAddCallloader(use[j])
           }
         } else if (use instanceof Object) {
-          readAddCallloader(use.loader,{query: use.options.name})
+          readAddCallloader(use.loader, {
+            query: use.options.name
+          })
         }
       }
     }

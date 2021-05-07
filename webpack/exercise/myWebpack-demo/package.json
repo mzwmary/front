@@ -4,10 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config my.webpack.config.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.6"
+  },
+  "devDependencies": {
+    "webpack": "^5.35.1",
+    "webpack-cli": "^4.6.0"
+  }
 }

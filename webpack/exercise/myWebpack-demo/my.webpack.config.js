@@ -1,4 +1,6 @@
 const path = require('path')
+const HelloWordPlugin = require('./plugins/HelloWordPlugin.js')
+const HTMLPlugin = require('./plugins/HTMLPlugin.js')
 module.exports = {
   entry: './view/index.js',
   output: {
@@ -30,5 +32,12 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new HelloWordPlugin(),
+    // new HTMLPlugin({
+    //   filename: 'index.html',
+    //   template: './view/index.html'
+    // })
+  ]
 }
