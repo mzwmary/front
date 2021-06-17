@@ -1,75 +1,78 @@
 # 数组方法
 
-## 数组排序
+## ES3
 
-## Array.isArray() 
-
-> - 作用：用于确定传递的值是否是一个 Array。
-> - 语法：`Array.isArray(obj)`
-> - 参数：
->   + obj：需要检测的值。
-> - 返回值：如果对象是 Array，则为true; 否则为false。
-
-__instanceof 和 isArray__
-
-当检测Array实例时, Array.isArray 优于 instanceof,因为Array.isArray能检测iframes.
-
-```js
-var iframe = document.createElement('iframe');
-document.body.appendChild(iframe);
-xArray = window.frames[window.frames.length-1].Array;
-var arr = new xArray(1,2,3); // [1,2,3]
-
-// Correctly checking for Array
-Array.isArray(arr);  // true
-// Considered harmful, because doesn't work though iframes
-arr instanceof Array; // false
-```
-
-## reduce() 
-
-__作用：__接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。
-
-reduce() 可以作为一个高阶函数，用于函数的 compose。
-
-__注意:__ reduce() 对于空数组是不会执行回调函数的。
-
-__浏览器支持：__
-
-![浏览器支持](../images/Array_reduce1.jpg)
-
-__语法：__
+### join()
+- 作用：将一个数组（或一个类数组对象）的所有元素转化为字符串,用separator连接成一个字符串并返回这个字符串。
+- 语法：`str = arr.join(separator)`
+- 参数：
+  + separator：
+    - 可省略,默认,
+    - 如果需要(separator)，将分隔符转换为字符串。
+- 返回值：一个所有数组元素连接的字符串。如果 arr.length 为0，则返回空字符串
+- 原数组: 不变
+- 注意点: 
+  + 链接符separator,不是字符串时,转化成字符串
+  + 数组元素不是字符串时,转化成字符串
+  + true、NaN转化成true、NaN字符串
+  + null、undefined转化成空字符串
+- 示例:
 
 ```js
-array.reduce(function(total, currentValue, currentIndex, arr), initialValue)
+var arr = [1, 2, 3]
+a.join() // 1,2,3
+a.join(" ") // 1 2 3
+a.join("") // 123
+
+var arr = new Array(5)
+arr.join("-") // "----"
+arr.join(" ") // "    "
+
+var arr = [1, [2, [3, 4], 5],true,null,undefined,NaN]
+arr.join() // "1,2,3,4,5,true,,,NaN"
+
+arr.join(['y']) // "1y2,3,4,5ytrueyyyNaN"
 ```
 
-__参数：__
 
-![浏览器支持](../images/Array_reduce2.jpg)
-
-__示例：__
+### reverse()
+- 作用：逆序数组
+- 语法：`arr.reverse()`
+- 参数：无
+- 返回值：元素顺序变成倒序的原数组
+- 原数组: 地址不变,元素改变
+- 注意点:
+- 示例:
 
 ```js
-var numbers = [15.5, 2.3, 1.1, 4.7];
- 
-function getSum(total, num) {
-    return total + Math.round(num);
-}
-function myFunction(item) {
-    document.getElementById("demo").innerHTML = numbers.reduce(getSum, 0);
-}
+var a = [1, 2, 3] // [3, 2, 1]
+var b = a.reverse() // [3, 2, 1]
+console.log(a,b, a===b) // [3, 2, 1], [3, 2, 1],true
 ```
 
-## push()
+### sort()
+- 作用：将数组元素按一定规则排序
+- 语法：`arr.sort(callback)`
+- 参数：
+  + callback(a, b) 函数
+- 返回值：
+  + callback 返回负数,正序
+  + callback 返回正数,倒序
+  + callback 返回0,相等
+  
+- 原数组: 地址不变,元素改变
+- 注意点:
+- 示例:
 
 ```js
-var a = [1]
-a.push(2,3,4)//4
-console.log(a)//[1,2,3,4]
+var a = [33,4,1111,222]
+var b = a.sort() // 字母表排序: [1111,222,33,4]
+var c = a.sort(function (a,b) {return a - b}) // 正序 [4, 33, 222, 1111]
+var d = a.sort(function (a,b) {return b - a}) // 倒序 [1111, 222, 33, 4]
+console.log(a === b && a === c && a === d)// true
 ```
 
-## concat()
+### concat()
 
 > - 作用：concat() 方法用于连接两个或多个数组。该方法不会改变现有的数组，而仅仅会返回被连接数组的一个副本。
 > - 语法：`arrayObject.concat(arrayX,arrayX,......,arrayX)`
@@ -85,7 +88,100 @@ a.concat()//[1]
 a.concat(1)//[1,1]
 a.concat([1])//[1,1]
 ```
-## every()
+
+### slice()
+### splice()
+### push()与pop()
+```js
+var a = [1]
+a.push(2,3,4)//4
+console.log(a)//[1,2,3,4]
+```
+### unshift()与shift()
+### toString()与toLocalString()
+
+
+
+## ES5
+### forEach
+> - 作用：遍历数组
+> - 语法：`array.forEach(function(currentValue, index, arr), thisValue)`
+> - 返回值：undefined
+
+![浏览器支持](../images/Array_forEach.jpg)
+
+__forEach实现原理__
+
+```js
+Array.prototype.myForEach = function(fn,context){
+    if (typeof fn !== "function") {
+        throw new TypeError("arguments[0] is not a function");
+    }
+    let arr = this;
+    let temp = [];
+    for (let i = 0; i < arr.length; i++) {
+         fn.call(context, arr[i], i, arr);
+    }
+}
+```
+### map() 
+
+> - 作用:遍历数组
+> - 语法：`array.map(function(currentValue,index,arr), thisValue)`
+> - 注意：
+>   + map() 不会对空数组进行检测。
+>   + map() 不会改变原始数组。
+> - 返回值：返回一个新数组，数组中的元素为原始数组元素调用函数处理后的值。
+ 
+![浏览器支持](../images/Array_map.jpg)
+
+- __map实现原理：__
+
+```js
+Array.prototype.fakeMap = function fakeMap(fn, context) {
+    if (typeof fn !== "function") {
+        throw new TypeError("arguments[0] is not a function");
+    }
+
+    let arr = this;
+    let temp = [];
+    for (let i = 0; i < arr.length; i++) {
+        // 迭代执行
+        let result = fn.call(context, arr[i], i, arr);
+        temp.push(result);
+    }
+    return temp;
+};
+```
+### filter() 
+
+> - 作用:创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
+> - 语法：`array.filter(function(currentValue,index,arr), thisValue)`
+> - 注意：
+>   + filter() 不会对空数组进行检测。
+>   + filter() 不会改变原始数组。
+> - 返回值：遍历数组时，每次调用回调函数，若回调函数的返回值是true,就将当前元素加入到返回值数组中。
+ 
+![浏览器支持](../images/Array_filter.jpg)
+
+- __filter实现原理：__
+
+```js
+Array.prototype.fakeFilter = function (fn, context) {
+    if (typeof fn !== "function") {
+        throw new TypeError("arguments[0] is not a function");
+    }
+
+    let arr = this;
+    let temp = [];
+    for (let i = 0; i < arr.length; i++) {
+        let result = fn.call(context, arr[i], i, arr);
+        if (result) temp.push(arr[i]);
+    }
+    return temp;
+};
+```
+### every()与some()
 
 > - 作用：测试数组的所有元素是否都通过了指定函数的测试。
 > - 语法：`arr.every(callback[, thisArg])`
@@ -129,8 +225,42 @@ if (!Array.prototype.every)
   };
 }
 ```
+### reduce()与reduceRight()
 
-## indexOf()
+__作用：__接收一个函数作为累加器，数组中的每个值（从左到右）开始缩减，最终计算为一个值。
+
+reduce() 可以作为一个高阶函数，用于函数的 compose。
+
+__注意:__ reduce() 对于空数组是不会执行回调函数的。
+
+__浏览器支持：__
+
+![浏览器支持](../images/Array_reduce1.jpg)
+
+__语法：__
+
+```js
+array.reduce(function(total, currentValue, currentIndex, arr), initialValue)
+```
+
+__参数：__
+
+![浏览器支持](../images/Array_reduce2.jpg)
+
+__示例：__
+
+```js
+var numbers = [15.5, 2.3, 1.1, 4.7];
+ 
+function getSum(total, num) {
+    return total + Math.round(num);
+}
+function myFunction(item) {
+    document.getElementById("demo").innerHTML = numbers.reduce(getSum, 0);
+}
+```
+
+### indexOf()
 
 > - 作用：返回在数组中可以找到一个给定元素的第一个索引，如果不存在，则返回-1。
 > - 语法：`arr.indexOf(searchElement[, fromIndex = 0])`
@@ -139,7 +269,7 @@ if (!Array.prototype.every)
 >   + fromIndex：开始查找的位置。如果该索引值大于或等于数组长度，意味着不会在数组里查找，返回-1。如果参数中提供的索引值是一个负值，则将其作为数组末尾的一个抵消，即-1表示从最后一个元素开始查找，-2表示从倒数第二个元素开始查找 ，以此类推。 注意：如果参数中提供的索引值是一个负值，并不改变其查找顺序，查找顺序仍然是从前向后查询数组。如果抵消后的索引值仍小于0，则整个数组都将会被查询。其默认值为0.
 > - 返回值：首个被找到的元素在数组中的索引位置; 若没有找到则返回 -1。
 
-## lastIndexOf() 
+### lastIndexOf() 
 
 > - 返回指定元素（也即有效的 JavaScript 值或变量）在数组中的最后一个的索引，如果不存在则返回 -1。从数组的后面向前查找，从 fromIndex 处开始。
 > - 语法：`arr.lastIndexOf(searchElement[, fromIndex = arr.length - 1])`
@@ -149,109 +279,35 @@ if (!Array.prototype.every)
 >   + 从此位置开始逆向查找。默认为数组的长度减 1，即整个数组都被查找。如果该值大于或等于数组的长度，则整个数组会被查找。如果为负值，将其视为从数组末尾向前的偏移。即使该值为负，数组仍然会被从后向前查找。如果该值为负时，其绝对值大于数组长度，则方法返回 -1，即数组不会被查找。
 > - 返回值：数组中最后一个元素的索引，如未找到返回-1
 
-## join()
 
-> - 作用：将一个数组（或一个类数组对象）的所有元素连接成一个字符串并返回这个字符串。
-> - 语法：
-    ```js
-    str = arr.join()
-    // 默认为 ","
 
-    str = arr.join("")
-    // 分隔符 === 空字符串 ""
+### Array.isArray() 
 
-    str = arr.join(separator)
-    // 分隔符
-    ```
+> - 作用：用于确定传递的值是否是一个 Array。
+> - 语法：`Array.isArray(obj)`
 > - 参数：
->   + separator：指定一个字符串来分隔数组的每个元素。
->     - 如果需要(separator)，将分隔符转换为字符串。
->     - 如果省略()，数组元素用逗号分隔。默认为 ","。
->     - 如果separator是空字符串("")，则所有元素之间都没有任何字符。
-> - 返回值：一个所有数组元素连接的字符串。如果 arr.length 为0，则返回空字符串
+>   + obj：需要检测的值。
+> - 返回值：如果对象是 Array，则为true; 否则为false。
 
-## 数组遍历
+__instanceof 和 isArray__
 
-### forEach
-> - 作用：遍历数组
-> - 语法：`array.forEach(function(currentValue, index, arr), thisValue)`
-> - 返回值：undefined
-
-![浏览器支持](../images/Array_forEach.jpg)
-
-__forEach实现原理__
+当检测Array实例时, Array.isArray 优于 instanceof,因为Array.isArray能检测iframes.
 
 ```js
-Array.prototype.myForEach = function(fn,context){
-    if (typeof fn !== "function") {
-        throw new TypeError("arguments[0] is not a function");
-    }
-    let arr = this;
-    let temp = [];
-    for (let i = 0; i < arr.length; i++) {
-         fn.call(context, arr[i], i, arr);
-    }
-}
+var iframe = document.createElement('iframe');
+document.body.appendChild(iframe);
+xArray = window.frames[window.frames.length-1].Array;
+var arr = new xArray(1,2,3); // [1,2,3]
+
+// Correctly checking for Array
+Array.isArray(arr);  // true
+// Considered harmful, because doesn't work though iframes
+arr instanceof Array; // false
 ```
 
-### map() 
 
-> - 作用:遍历数组
-> - 语法：`array.map(function(currentValue,index,arr), thisValue)`
-> - 注意：
->   + map() 不会对空数组进行检测。
->   + map() 不会改变原始数组。
-> - 返回值：返回一个新数组，数组中的元素为原始数组元素调用函数处理后的值。
- 
-![浏览器支持](../images/Array_map.jpg)
 
-- __map实现原理：__
 
-```js
-Array.prototype.fakeMap = function fakeMap(fn, context) {
-    if (typeof fn !== "function") {
-        throw new TypeError("arguments[0] is not a function");
-    }
-
-    let arr = this;
-    let temp = [];
-    for (let i = 0; i < arr.length; i++) {
-        // 迭代执行
-        let result = fn.call(context, arr[i], i, arr);
-        temp.push(result);
-    }
-    return temp;
-};
-```
-
-### filter() 
-
-> - 作用:创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
-> - 语法：`array.filter(function(currentValue,index,arr), thisValue)`
-> - 注意：
->   + filter() 不会对空数组进行检测。
->   + filter() 不会改变原始数组。
-> - 返回值：遍历数组时，每次调用回调函数，若回调函数的返回值是true,就将当前元素加入到返回值数组中。
- 
-![浏览器支持](../images/Array_filter.jpg)
-
-- __filter实现原理：__
-
-```js
-Array.prototype.fakeFilter = function (fn, context) {
-    if (typeof fn !== "function") {
-        throw new TypeError("arguments[0] is not a function");
-    }
-
-    let arr = this;
-    let temp = [];
-    for (let i = 0; i < arr.length; i++) {
-        let result = fn.call(context, arr[i], i, arr);
-        if (result) temp.push(arr[i]);
-    }
-    return temp;
-};
-```
 
 # ES6数组扩展
 

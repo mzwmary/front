@@ -38,8 +38,10 @@ new (Date.bind.apply(Date, [null, 2015, 1, 1]))
 new Date(...[2015, 1, 1]);
 
 
-
-// 5、复制数组
+/**
+ * App打包原理
+ */
+// 1、复制数组
 var a1 = [1, 2];
 // 写法一
 var a2 = [...a1];
@@ -47,13 +49,13 @@ var a2 = [...a1];
 var [...a3] = a1;
 console.log(a1,a2,a3)// [1, 2]  [1, 2]  [1, 2]
 
-// 6、合并数组
+// 2、合并数组
 var a = [1, 2]
 var b = [3, 4]
 var c = [...a, ...b]
 console.log(c)// [1, 2, 3, 4]
 
-// 7、与解构赋值结合
+// 3、与解构赋值结合
 var [first, ...rest] = [1, 2, 3, 4, 5];
 console.log(first,rest)// 1  [2, 3, 4, 5]
 
@@ -68,7 +70,7 @@ console.log(first, rest)// "foo" []
 // var [first, ...middle, last] = [1, 2, 3, 4, 5];// 报错 Rest element must be last element
 
 
-// 8、与字符串
+// 4、与字符串
 // 将字符串转成数组
 var a = [...'hello']
 console.log(a)// ["h", "e", "l", "l", "o"]
@@ -78,3 +80,43 @@ var a = 'x\uD83D\uDE80y'.length
 var b = [...'x\uD83D\uDE80y'].length
 console.log(a, b)// 4 3
 
+// 5、实现了 Iterator 接口的对象
+Number.prototype[Symbol.iterator] = function*() {
+  let i = 0;
+  let num = this.valueOf();
+  while (i < num) {
+    yield i++;
+  }
+}
+
+console.log([...5]) // [0, 1, 2, 3, 4]
+
+
+// var arrayLike = {
+//   '0': 'a',
+//   '1': 'b',
+//   '2': 'c',
+//   length: 3
+// };
+// var arr = [...arrayLike];
+// console.log(arr)// arrayLike is not iterable
+
+
+// 6、Map 和 Set 结构，Generator 函数
+var map = new Map([
+  [1, 'one'],
+  [2, 'two'],
+  [3, 'three'],
+]);
+
+var arr = [...map.keys()];
+console.log(arr); // [1, 2, 3]
+
+// Generator 函数
+var go = function*(){
+  yield 1;
+  yield 2;
+  yield 3;
+};
+
+console.log([...go()]) // [1, 2, 3]

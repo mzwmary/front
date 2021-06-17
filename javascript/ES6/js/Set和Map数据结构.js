@@ -158,6 +158,9 @@ console.log(difference); // Set(1) {1}
 
 
 
+
+
+
 /**
  * WeakSet
  * "constructor", "delete", "has", "add"
@@ -211,7 +214,14 @@ console.log(aa); // true
 
 
 
+
+
+
+
+
+
 /**
+ * Map
  * 类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
  * 
  * "constructor", "get", "set", "has", "delete", "clear", "entries", "forEach", "keys", "size", "values"
@@ -281,9 +291,9 @@ map
   .set(1, 'bbb');
 
 var a = map.get(1);
-console.log(a);// bbb
+console.log(a); // bbb
 var b = map.get('asdddef');
-console.log(b);// undefined
+console.log(b); // undefined
 
 
 var map = new Map();
@@ -312,7 +322,7 @@ map.get(NaN) // 123
 /**
  * Map 结构的默认遍历器接口（Symbol.iterator属性），就是entries方法。
  */
-console.log(map[Symbol.iterator] === map.entries)// true
+console.log(map[Symbol.iterator] === map.entries) // true
 
 
 // 结合...
@@ -324,7 +334,15 @@ var map = new Map([
 var a = [...map.keys()];
 var b = [...map.values()];
 var c = [...map.entries()];
-console.log(a, b, c);// [1, 2, 3]  ["one", "two", "three"]  [Array(2), Array(2), Array(2)]
+console.log(a, b, c); // [1, 2, 3]  ["one", "two", "three"]  [Array(2), Array(2), Array(2)]
+
+
+
+
+
+
+
+
 
 
 
@@ -334,7 +352,138 @@ console.log(a, b, c);// [1, 2, 3]  ["one", "two", "three"]  [Array(2), Array(2
  * WeakMap与Map的区别有两点:
  * 首先，WeakMap只接受对象作为键名（null除外），不接受其他类型的值作为键名
  * 其次，WeakMap的键名所指向的对象，不计入垃圾回收机制
+ * 
  * "constructor", "delete", "get", "set", "has"
+ * WeakMap 与 Map 在 API 上的区别主要是两个，
+ * 一是没有遍历操作（即没有keys()、values()和entries()方法），也没有size属性。
+ * 二是无法清空，即不支持clear方法。
+ * 
+ * 它的键名所引用的对象都是弱引用，即垃圾回收机制不将该引用考虑在内。
  */
 var wm = new WeakMap();
-console.log(Object.getOwnPropertyNames(wm.__proto__));//["constructor", "delete", "get", "set", "has"]
+console.log(Object.getOwnPropertyNames(wm.__proto__)); //["constructor", "delete", "get", "set", "has"]
+
+
+var map = new WeakMap();
+// map.set(1, 2)// Invalid value used as weak map key
+// map.set(Symbol(), 2)// Invalid value used as weak map key
+// map.set(null, 2)// Invalid value used as weak map key
+
+
+// 注意，WeakMap 弱引用的只是键名，而不是键值。键值依然是正常引用。
+var wm = new WeakMap();
+var key = {};
+var obj = {
+  foo: 1
+};
+
+wm.set(key, obj);
+obj = null;
+console.log(wm.get(key)); // {foo: 1}
+
+
+
+
+
+/**
+ * WeakMap键名是否存在演示
+ * 可以通过 Node 的process.memoryUsage方法看出来。
+ * 
+ * 第一步:--expose-gc参数表示允许手动执行垃圾回收机制。
+ * node --expose-gc
+ * 
+ * 第二步:
+ * // 手动执行一次垃圾回收，保证获取的内存使用状态准确
+ * > global.gc();
+ * undefined
+ * 
+ * // 查看内存占用的初始状态，heapUsed 为 4M 左右
+ * > process.memoryUsage();
+ * { rss: 21106688,
+ * heapTotal: 7376896,
+ * heapUsed: 4153936,
+ * external: 9059 }
+ * > let wm = new WeakMap();
+ * undefined
+ * 
+ * // 新建一个变量 key，指向一个 5*1024*1024 的数组
+ * > let key = new Array(5 * 1024 * 1024);
+ * undefined
+ * 
+ * // 设置 WeakMap 实例的键名，也指向 key 数组
+ * // 这时，key 数组实际被引用了两次，
+ * // 变量 key 引用一次，WeakMap 的键名引用了第二次
+ * // 但是，WeakMap 是弱引用，对于引擎来说，引用计数还是1
+ * > wm.set(key, 1);
+ * WeakMap {}
+ * > global.gc();
+ * undefined
+ * 
+ * // 这时内存占用 heapUsed 增加到 45M 了
+ * > process.memoryUsage();
+ * { rss: 67538944,
+ * heapTotal: 7376896,
+ * heapUsed: 45782816,
+ * external: 8945 }
+ * 
+ * // 清除变量 key 对数组的引用，
+ * // 但没有手动清除 WeakMap 实例的键名对数组的引用
+ * > key = null;
+ * null
+ * 
+ * // 再次执行垃圾回收
+ * > global.gc();
+ * undefined
+ * 
+ * // 内存占用 heapUsed 变回 4M 左右，
+ * // 可以看到 WeakMap 的键名引用没有阻止 gc 对内存的回收
+ * > process.memoryUsage();
+ * { rss: 20639744,
+ * heapTotal: 8425472,
+ * heapUsed: 3979792,
+ * external: 8956 }
+ * 
+ * Chrome 浏览器的 Dev Tools 的 Memory 面板，有一个垃圾桶的按钮，可以强制垃圾回收（garbage collect）。
+ * 这个按钮也能用来观察 WeakMap 里面的引用是否消失。
+ */
+
+
+
+
+/**
+ * WeakMap 的用途
+ */
+// DOM 节点作为键名
+// var myWeakmap = new WeakMap();
+// myWeakmap.set(
+//   document.getElementById('logo'), {
+//     timesClicked: 0
+//   });
+// document.getElementById('logo').addEventListener('click', function () {
+//   let logoData = myWeakmap.get(document.getElementById('logo'));
+//   logoData.timesClicked++;
+// }, false);
+
+
+// 部署私有属性
+const _counter = new WeakMap();
+const _action = new WeakMap();
+class Countdown {
+  constructor(counter, action) {
+    _counter.set(this, counter);
+    _action.set(this, action);
+  }
+  dec() {
+    let counter = _counter.get(this);
+    if (counter < 1) return;
+    counter--;
+    _counter.set(this, counter);
+    if (counter === 0) {
+      _action.get(this)();
+    }
+  }
+}
+var c = new Countdown(2, () => console.log('DONE'));
+c.dec()
+c.dec()
+// DONE
