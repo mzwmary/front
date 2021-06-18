@@ -3,23 +3,25 @@
 ## ES3
 
 ### join()
-- 作用：将一个数组（或一个类数组对象）的所有元素转化为字符串,用separator连接成一个字符串并返回这个字符串。
-- 语法：`str = arr.join(separator)`
-- 参数：
+1. 作用：将一个数组（或一个类数组对象）的所有元素转化为字符串,用separator连接成一个字符串并返回这个字符串。
+2. 语法：`str = arr.join(separator)`
+3. 参数：
   + separator：
     - 可省略,默认,
     - 如果需要(separator)，将分隔符转换为字符串。
-- 返回值：一个所有数组元素连接的字符串。如果 arr.length 为0，则返回空字符串
-- 原数组: 不变
-- 注意点: 
+4. 返回值：一个所有数组元素连接的字符串。如果 arr.length 为0，则返回空字符串
+5. 原数组: 不变
+6. 注意点: 
   + 链接符separator,不是字符串时,转化成字符串
   + 数组元素不是字符串时,转化成字符串
   + true、NaN转化成true、NaN字符串
   + null、undefined转化成空字符串
-- 示例:
+7. 示例:
+
+[join](../js/01-join.js)
 
 ```js
-var arr = [1, 2, 3]
+var arr = [1, 2, 3];
 a.join() // 1,2,3
 a.join(" ") // 1 2 3
 a.join("") // 123
@@ -36,13 +38,16 @@ arr.join(['y']) // "1y2,3,4,5ytrueyyyNaN"
 
 
 ### reverse()
-- 作用：逆序数组
-- 语法：`arr.reverse()`
-- 参数：无
-- 返回值：元素顺序变成倒序的原数组
-- 原数组: 地址不变,元素改变
-- 注意点:
-- 示例:
+
+1. 作用：逆序数组
+2. 语法：`arr.reverse()`
+3. 参数：无
+4. 返回值：元素顺序变成倒序的原数组
+5. 原数组: 地址不变,元素改变
+6. 注意点:
+7. 示例:
+
+[reverse](../js/02-reverse.js)
 
 ```js
 var a = [1, 2, 3] // [3, 2, 1]
@@ -51,18 +56,20 @@ console.log(a,b, a===b) // [3, 2, 1], [3, 2, 1],true
 ```
 
 ### sort()
-- 作用：将数组元素按一定规则排序
-- 语法：`arr.sort(callback)`
-- 参数：
+1. 作用：将数组元素按一定规则排序
+2. 语法：`arr.sort(callback)`
+3. 参数：
   + callback(a, b) 函数
-- 返回值：
+4. 返回值：
   + callback 返回负数,正序
   + callback 返回正数,倒序
   + callback 返回0,相等
   
-- 原数组: 地址不变,元素改变
-- 注意点:
-- 示例:
+5. 原数组: 地址不变,元素改变
+6. 注意点:
+7. 示例:
+
+[sort](../js/03-sort.js)
 
 ```js
 var a = [33,4,1111,222]
@@ -74,41 +81,272 @@ console.log(a === b && a === c && a === d)// true
 
 ### concat()
 
-> - 作用：concat() 方法用于连接两个或多个数组。该方法不会改变现有的数组，而仅仅会返回被连接数组的一个副本。
-> - 语法：`arrayObject.concat(arrayX,arrayX,......,arrayX)`
-> - 参数：
->   + arrayX  必需。该参数可以是具体的值，也可以是数组对象。可以是任意多个。
-> - 返回值：返回一个新的数组。该数组是通过把所有 arrayX 参数添加到 arrayObject 中生成的。如果要进行 concat() 操作的参数是数组，那么添加的是数组中的元素，而不是数组。
+1. 作用：合并一个或多个数组(元素),创建并返回一个新数组
+2. 语法：`arrayObject.concat(arrayX,arrayX,......,arrayX)`
+3. 参数：数组/非数组,可以是任意多个。
+4. 返回值：合并后的新数组
+5. 原数组: 不变
+6. 注意点:
+7. 示例:
 
-__举例：__
+[concat](../js/04-concat.js)
 
 ```js
-var a = [1]
-a.concat()//[1]
-a.concat(1)//[1,1]
-a.concat([1])//[1,1]
+// 非数组
+var a = [1, 2, 3]
+var b = a.concat(4, 5)
+console.log(a, b)//[1, 2, 3]  [1, 2, 3, 4, 5]
+
+// 数组
+var c = [6, 7]
+var d = a.concat(c)
+console.log(a, c, d) // [1, 2, 3] [6, 7] [1, 2, 3, 6, 7]
+
+// 没有参数
+var a = [1, 2, 3]
+var b = a.concat()
+console.log(a, b, a === b)// [1, 2, 3]  [1, 2, 3] false
+
+// 任意参数
+var arr = [1];
+var a = [2];
+var b = [3, 4];
+var c = function () { };
+var arr1 = arr.concat(a, b, c);
+console.log(arr1,arr1[4]=== c)// [1, 2, 3, 4,f] true
 ```
 
 ### slice()
-### splice()
-### push()与pop()
+
+1. 作用：在原数组中截取元素,并组成新的数组,新数组元素的顺序不变
+2. 语法：`arr.slice(start,end)`
+3. 参数：
+  + start: 开始截取的位置(包含)
+  + end: 结束截取的位置(不包含)
+4. 返回值：截取的元素组成的新数组
+5. 原数组: 不变
+6. 注意点:
+7. 示例:
+
+[slice](../js/05-slice.js)
+
 ```js
-var a = [1]
-a.push(2,3,4)//4
-console.log(a)//[1,2,3,4]
+var a = [1, 2, 3, 4, 5, 6];
+
+// 正常参数
+var b = a.slice(0, 3)
+
+// 一个参数
+var c = a.slice(3) // [1, 2, 3]
+
+// 没有参数
+var d = a.slice() // [1, 2, 3, 4, 5, 6]
+
+// 开始位置在结束位置前面
+var e = a.slice(-1, -3) // []
+
+// 参数为负
+var f = a.slice(-3, -1) //[4, 5]
+
+var g = a.slice(0, -3) // [1, 2, 3]
+var h = a.slice(-3, 0) // []
+
+// 开始位置大于长度
+var j = a.slice(-6) // [1, 2, 3, 4, 5, 6]
+
+// 负数位置大于长度
+var i = a.slice(6) // []
+var k = a.slice(-7)// [1, 2, 3, 4, 5, 6]
+
+// 开始和结束位置相同
+var l = a.slice(1,1) // []
 ```
+
+
+### splice()
+
+1. 作用：在原数组中截取掉元素/添加元素
+2. 语法：`arr.splice(start,end,arrayX...)`
+3. 参数：
+  + start: 开始截取的位置(包含)
+  + end: 结束截取的位置(不包含)
+  + arrayX: 在截取位置添加的元素,可以是多个
+4. 返回值：被截取掉的元素组成的新数组
+5. 原数组: 地址不变,元素改变
+6. 注意点:
+7. 示例:
+
+[splice](../js/06-splice.js)
+
+```js
+var a = [1, 2, 3, 4, 5]
+
+var b = a.splice(1, 1) 
+console.log(a, b) // [1, 3, 4, 5] [2]
+
+var c= a.splice(1,0)
+console.log(a, c) // [1, 3, 4, 5] []
+
+var d = a.splice(3)
+console.log(a, d) // [1, 3, 4] [5]
+
+var e = a.splice(3)
+console.log(a, e) // [1, 3, 4] []
+
+var f = a.splice(-1)
+console.log(a, f) // [1, 3] [4]
+
+var g = a.splice(-3)
+console.log(a, g) // [] [1, 3]
+
+var a = [1, 2, 3, 4, 5]
+
+var b = a.splice(0, 0, 'a', 'b')
+console.log(a, b) // ["a", "b", 1, 2, 3, 4, 5] []
+
+var c = a.splice(0, 1, 'c')
+console.log(a, c) // ["c", "b", 1, 2, 3, 4, 5] ["a"]
+
+var d = a.splice()
+console.log(a, d) // ["c", "b", 1, 2, 3, 4, 5] []
+
+var e = a.splice(0, 1, [1, 2]);
+console.log(a, e);//  [[1, 2], "b", 1, 2, 3, 4, 5] ["c"]
+```
+
+### push()与pop()
+
+[push_pop](../js/07-push_pop.js)
+
+#### push()
+
+1. 作用：添加一个或者多个元素到数组最后面
+2. 语法：`arr.push(...a)`
+3. 参数：
+  + a: 被添加的元素,可以是多个
+4. 返回值：数组长度
+5. 原数组: 地址不变,元素改变
+6. 注意点:
+7. 示例:
+
+```js
+var a = [1, 2, 3, 4, 5]
+var aa = a;
+var b = a.push()
+console.log(a, a === aa, b)//  [1, 2, 3, 4, 5] true 5
+
+var c = a.push(6)
+console.log(a, a === aa, c)// [1, 2, 3, 4, 5, 6] true 6
+
+var d = a.push(7, 8)
+console.log(a, a === aa, d)// [1, 2, 3, 4, 5, 6, 7, 8] true 8
+```
+
+#### pop()
+
+1. 作用：删除数组最后一个元素
+2. 语法：`arr.pop()`
+3. 参数：无
+4. 返回值: 被删除的元素
+5. 原数组: 地址不变,元素改变
+6. 注意点:
+7. 示例:
+
+```js
+var e = a.pop()
+console.log(a, a === aa, e)// [1, 2, 3, 4, 5, 6, 7] true 8
+
+var f = a.pop(0)
+console.log(a, a === aa, f)// [1, 2, 3, 4, 5, 6] true 7
+
+var g = a.pop(2)
+console.log(a,g)//[1, 2, 3, 4, 5] 6
+```
+
 ### unshift()与shift()
+
+[unshift_shift](../js/08-unshift_shift.js)
+
+#### unshift()
+
+1. 作用：在数组最前面添加一个或多个元素
+2. 语法：`arr.unshift(...a)`
+3. 参数：a:被添加的元素,可以是多个
+4. 返回值: 数组的长度
+5. 原数组: 地址不变,元素改变
+6. 注意点:
+7. 示例:
+
+```js
+var a = []
+
+var b = a.unshift(1)
+console.log(a, b)// [1] 1
+
+var c = a.unshift(2, 3)
+console.log(a, c)// [2, 3, 1] 3
+```
+
+#### shift()
+
+1. 作用：删除数组最前面一个元素
+2. 语法：`arr.shift()`
+3. 参数：无
+4. 返回值: 被删除的元素
+5. 原数组: 地址不变,元素改变
+6. 注意点:
+7. 示例:
+
+```js
+var d = a.shift()
+console.log(a, d)// [3, 1] 2
+
+var e = a.shift()
+console.log(a,e)// [1] 3
+```
+
 ### toString()与toLocalString()
 
+[toString_toLocalString](../js/09-toString_toLocalString.js)
 
+#### toString()
+
+1. 作用：将数组每个元素转化为字符串,并输出用逗号分隔的字符串列表
+2. 语法：`arr.toString()`
+3. 参数：无
+4. 返回值: 返回字符串
+5. 原数组: 不变
+6. 注意点:
+7. 示例:
+
+```js
+var a = [1, [2, [3, undefined, null, true, NaN]]]
+var b = a.toString() // "1,2,3,,,true,NaN"
+var c = a.toLocaleString()// 1,2,3,,,true,NaN
+console.log(b,c)
+```
+
+#### toLocalString()
+
+1. 作用：将数组每个元素转化为字符串,并输出用逗号分隔的字符串列表(toString的本地方法)
+2. 语法：`arr.toLocalString()`
+3. 参数：无
+4. 返回值: 返回字符串
+5. 原数组: 不变
+6. 注意点:
+7. 示例:
 
 ## ES5
-### forEach
-> - 作用：遍历数组
-> - 语法：`array.forEach(function(currentValue, index, arr), thisValue)`
-> - 返回值：undefined
 
-![浏览器支持](../images/Array_forEach.jpg)
+### forEach
+
+1. 作用：将数组每个元素转化为字符串,并输出用逗号分隔的字符串列表(toString的本地方法)
+2. 语法：`arr.forEach()`
+3. 参数：无
+4. 返回值: 返回字符串
+5. 原数组: 不变
+6. 注意点:
+7. 示例:
 
 __forEach实现原理__
 

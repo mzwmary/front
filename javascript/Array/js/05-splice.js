@@ -27,4 +27,7 @@ var c = a.splice(0, 1, 'c')
 console.log(a, c) // ["c", "b", 1, 2, 3, 4, 5] ["a"]
 
 var d = a.splice()
-console.log(a,d) // ["c", "b", 1, 2, 3, 4, 5] []
+console.log(a, d) // ["c", "b", 1, 2, 3, 4, 5] []
+
+var e = a.splice(0, 1, [1, 2]);
+console.log(a, e);//  [[1, 2], "b", 1, 2, 3, 4, 5] ["c"]
